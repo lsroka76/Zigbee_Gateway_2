@@ -1,5 +1,5 @@
 /* Common Class for Zigbee End point */
-huj
+
 #pragma once
 
 #include "ZigbeeCore.h"
