@@ -73,6 +73,8 @@ public:
 
 static void bindDeviceCluster(zb_device_params_t *,int16_t cluster_id );
 
+void setIASZReporting(uint16_t min_interval, uint16_t max_interval);
+
   void onStatusNotification(void (*callback)(int, uint8_t *)) {
     _on_status_notification = callback;
   }

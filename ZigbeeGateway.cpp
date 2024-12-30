@@ -40,7 +40,7 @@ ZigbeeGateway::ZigbeeGateway(uint8_t endpoint) : ZigbeeEP(endpoint) {
 
   esp_zb_ias_zone_cluster_cfg_t zone_cfg = {
         .zone_state   = 0,
-        .zone_type    = ESP_ZB_ZCL_IAS_ZONE_ZONETYPE_CONTACT_SWITCH,
+        .zone_type    = 0x0016,// SS_IAS_ZONE_TYPE_DOOR_WINDOW_HANDLE
         .zone_status  = 0,
         .ias_cie_addr = ESP_ZB_ZCL_ZONE_IAS_CIE_ADDR_DEFAULT,
         .zone_id      = 0xFF,
@@ -183,9 +183,7 @@ void ZigbeeGateway::zbIASZoneStatusChangeNotification(const esp_zb_zcl_ias_zone_
 
   esp_zb_ieee_address_by_short(src_address.u.short_addr, ieee_addr_64);
 
-  //for (int i = 0; i < 8; i++)
-    //ieee_addr[i] = ieee_addr_64[i];
-    log_i("ieee addr %d:%d:%d:%d:%d:%d:%d:%d ",ieee_addr_64[7],ieee_addr_64[6],ieee_addr_64[5],ieee_addr_64[4],
+  log_i("ieee addr %d:%d:%d:%d:%d:%d:%d:%d ",ieee_addr_64[7],ieee_addr_64[6],ieee_addr_64[5],ieee_addr_64[4],
     ieee_addr_64[3],ieee_addr_64[2],ieee_addr_64[1],ieee_addr_64[0]);
   //log_i("src id %s ",ieee_addr);
   log_i("zone status %d ", message->zone_status);
@@ -198,5 +196,33 @@ void ZigbeeGateway::addBoundDevice(zb_device_params_t *device){
     device->short_addr = esp_zb_address_short_by_ieee(device->ieee_addr);
     _gateway_devices.push_back(device);
 }
+
+void ZigbeeGateway::setIASZReporting(uint16_t min_interval, uint16_t max_interval) {
+  /* Send "configure report attribute" command to the bound sensor */
+  esp_zb_zcl_config_report_cmd_t report_cmd;
+  report_cmd.address_mode = ESP_ZB_APS_ADDR_MODE_DST_ADDR_ENDP_NOT_PRESENT;
+  report_cmd.zcl_basic_cmd.src_endpoint = _instance->getEndpoint();
+  report_cmd.clusterID = ESP_ZB_ZCL_CLUSTER_ID_IAS_ZONE;
+
+  int16_t report_change = 0;
+  esp_zb_zcl_config_report_record_t records[] = {
+    {
+      .direction = ESP_ZB_ZCL_CMD_DIRECTION_TO_SRV, //0x00, //ESP_ZB_ZCL_REPORT_DIRECTION_SEND,
+      .attributeID = 0,
+      .attrType = ESP_ZB_ZCL_ATTR_TYPE_S16,
+      .min_interval = min_interval,
+      .max_interval = max_interval,
+      .reportable_change = &report_change,
+    },
+  };
+  report_cmd.record_number = ZB_ARRAY_LENTH(records);
+  report_cmd.record_field = records;
+
+  //log_i("Sending 'configure reporting' command");
+  esp_zb_lock_acquire(portMAX_DELAY);
+  esp_zb_zcl_config_report_cmd_req(&report_cmd);
+  esp_zb_lock_release();
+}
+
 
 #endif  //SOC_IEEE802154_SUPPORTED && CONFIG_ZB_ENABLED

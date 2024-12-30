@@ -180,9 +180,10 @@ void loop() {
       log_d("Unknown model %s, no binding is possible", zbd_model_name);
     }
   }
-  if (millis() - printTime > 5000) {
+  if (millis() - printTime > 60000) {
       zbGateway.printGatewayDevices();
       zbGateway.printJoinedDevices();
+      if (zbGateway.getGatewayDevices().size() > 0) zbGateway.setIASZReporting(10, 15);
       printTime = millis();
   }
 }
