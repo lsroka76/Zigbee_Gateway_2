@@ -23,7 +23,7 @@
 
 ZigbeeGateway zbGateway = ZigbeeGateway(GATEWAY_ENDPOINT_NUMBER);
 
-//Supla::ESPWifi wifi("SUPLA_EXT", "SuplaESP18");
+//Supla::ESPWifi wifi("xxx", "xxx");
 
 //Supla::Sensor::VirtualBinary *ZBS_TS0203_1;
 //Supla::Sensor::VirtualBinary *ZBS_TS0203_2;
