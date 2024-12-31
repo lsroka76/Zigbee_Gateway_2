@@ -93,7 +93,7 @@ void setup() {
   Zigbee.addEndpoint(&zbGateway);
 
   //Open network for 180 seconds after boot
-  Zigbee.setRebootOpenNetwork(0);
+  Zigbee.setRebootOpenNetwork(180);
 
   //Supla
   
