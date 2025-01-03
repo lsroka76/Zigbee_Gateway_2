@@ -168,13 +168,13 @@ void loop() {
       strcpy(zbd_model_name,zbGateway.readModel(joined_device->endpoint, joined_device->short_addr, joined_device->ieee_addr));
       log_i("model %s ", zbd_model_name);
       if ((strcmp(zbd_model_name,"ZigbeeTempSensor") == 0)||
-      strcmp(zbd_model_name,"TS0201") {
+          (strcmp(zbd_model_name,"TS0201") == 0)) {
           esp_zb_lock_acquire(portMAX_DELAY);
           zbGateway.bindDeviceCluster(joined_device, ESP_ZB_ZCL_CLUSTER_ID_TEMP_MEASUREMENT);
           esp_zb_lock_release();
       } else
       if ((strcmp(zbd_model_name,"TS0203") == 0)||
-          strcmp(zbd_model_name,"TS0202") == 0) {
+          (strcmp(zbd_model_name,"TS0202") == 0)) {
           esp_zb_lock_acquire(portMAX_DELAY);
           zbGateway.bindDeviceCluster(joined_device, ESP_ZB_ZCL_CLUSTER_ID_IAS_ZONE);
           esp_zb_lock_release();
