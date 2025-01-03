@@ -168,9 +168,9 @@ void ZigbeeGateway::printJoinedDevices() {
   }
 }
 
-void ZigbeeGateway::zbAttributeRead(uint16_t cluster_id, const esp_zb_zcl_attribute_t *attribute) {
+void ZigbeeGateway::zbAttributeRead(esp_zb_zcl_addr_t src_address, uint16_t src_endpoint, uint16_t cluster_id, const esp_zb_zcl_attribute_t *attribute) {
   
-  
+  //log_i("zbAttributeRead from 
   log_i("cluster_id %d ",cluster_id);
   log_i("attribute->id %d ", attribute->id);
 }
