@@ -170,9 +170,9 @@ void ZigbeeGateway::printJoinedDevices() {
 
 void ZigbeeGateway::zbAttributeRead(esp_zb_zcl_addr_t src_address, uint16_t src_endpoint, uint16_t cluster_id, const esp_zb_zcl_attribute_t *attribute) {
   
-  //log_i("zbAttributeRead from 
-  log_i("cluster_id %d ",cluster_id);
-  log_i("attribute->id %d ", attribute->id);
+  log_i("zbAttributeRead from %d, endpoint %d, cluster %d, attribute %d ", src_address.u.short_addr, src_endpoint, cluster_id, attribute->id);
+ // log_i("cluster_id %d ",cluster_id);
+//  log_i("attribute->id %d ", attribute->id);
 }
 
 void ZigbeeGateway::zbIASZoneStatusChangeNotification(const esp_zb_zcl_ias_zone_status_change_notification_message_t *message) {
