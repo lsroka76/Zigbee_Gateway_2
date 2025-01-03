@@ -71,7 +71,7 @@ void ZigbeeGateway::bindCb(esp_zb_zdp_status_t zdo_status, void *user_ctx) {
       zb_device_params_t *sensor = (zb_device_params_t *)user_ctx;
       _instance->_gateway_devices.push_back(sensor);
       log_v("Binding success (ZC side)");
-    } 
+    } else
       log_v("Binding success (ED side");
     
       _is_bound = true;
