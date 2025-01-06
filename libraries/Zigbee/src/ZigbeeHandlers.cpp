@@ -12,6 +12,7 @@ static esp_err_t zb_cmd_read_attr_resp_handler(const esp_zb_zcl_cmd_read_attr_re
 static esp_err_t zb_configure_report_resp_handler(const esp_zb_zcl_cmd_config_report_resp_message_t *message);
 static esp_err_t zb_cmd_default_resp_handler(const esp_zb_zcl_cmd_default_resp_message_t *message);
 static esp_err_t zb_cmd_ias_zone_status_change_handler(const esp_zb_zcl_ias_zone_status_change_notification_message_t *message);
+static esp_err_t zb_core_cmd_disc_attr_resp_handler(esp_zb_zcl_cmd_discover_attributes_resp_message_t *message);
 
 // Zigbee action handlers
 [[maybe_unused]]
@@ -24,6 +25,7 @@ switch (callback_id) {
     case ESP_ZB_CORE_CMD_READ_ATTR_RESP_CB_ID:     ret = zb_cmd_read_attr_resp_handler((esp_zb_zcl_cmd_read_attr_resp_message_t *)message); break;
     case ESP_ZB_CORE_CMD_REPORT_CONFIG_RESP_CB_ID: ret = zb_configure_report_resp_handler((esp_zb_zcl_cmd_config_report_resp_message_t *)message); break;
     case ESP_ZB_CORE_CMD_DEFAULT_RESP_CB_ID:       ret = zb_cmd_default_resp_handler((esp_zb_zcl_cmd_default_resp_message_t *)message); break;
+    case ESP_ZB_CORE_CMD_DISC_ATTR_RESP_CB_ID:	   ret = zb_core_cmd_disc_attr_resp_handler((esp_zb_zcl_cmd_discover_attributes_resp_message_t *)message); break;	
     case ESP_ZB_CORE_CMD_IAS_ZONE_ZONE_STATUS_CHANGE_NOT_ID: ret = zb_cmd_ias_zone_status_change_handler((esp_zb_zcl_ias_zone_status_change_notification_message_t *)message); 
 break;
     default:                                       log_w("Receive unhandled Zigbee action(0x%x) callback", callback_id); break;
@@ -167,5 +169,17 @@ static esp_err_t zb_cmd_ias_zone_status_change_handler(const esp_zb_zcl_ias_zone
   return ESP_OK;
 }
 
+static esp_err_t zb_core_cmd_disc_attr_resp_handler(esp_zb_zcl_cmd_discover_attributes_resp_message_t *message) {
+  if (!message) {
+    log_e("Empty message");
+  }
+  if (message->info.status != ESP_ZB_ZCL_STATUS_SUCCESS) {
+    log_e("Received message: error status(%d)", message->info.status);
+  }
+  log_i("Attribute Discovery Message - attribute id %d", message->variables->attr_id);
+
+  return ESP_OK;
+
+}
 
 #endif  //SOC_IEEE802154_SUPPORTED && CONFIG_ZB_ENABLED
