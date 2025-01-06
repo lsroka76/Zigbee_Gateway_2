@@ -209,7 +209,7 @@ void ZigbeeGateway::setIASZReporting(uint16_t min_interval, uint16_t max_interva
   report_cmd.zcl_basic_cmd.src_endpoint = _instance->getEndpoint();
   report_cmd.clusterID = ESP_ZB_ZCL_CLUSTER_ID_IAS_ZONE;
 
-  int16_t report_change = 0;
+  int16_t report_change = 1;
   esp_zb_zcl_config_report_record_t records[] = {
     {
       .direction = ESP_ZB_ZCL_CMD_DIRECTION_TO_SRV, //0x00, //ESP_ZB_ZCL_REPORT_DIRECTION_SEND,

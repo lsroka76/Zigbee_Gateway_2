@@ -178,7 +178,7 @@ void loop() {
           esp_zb_lock_acquire(portMAX_DELAY);
           zbGateway.bindDeviceCluster(joined_device, ESP_ZB_ZCL_CLUSTER_ID_IAS_ZONE);
           esp_zb_lock_release();
-      } else
+      } else 
           if (strcmp(zbd_model_name,"TS0044") == 0) {
           esp_zb_lock_acquire(portMAX_DELAY);
           zbGateway.bindDeviceCluster(joined_device, ESP_ZB_ZCL_CLUSTER_ID_ON_OFF);
@@ -198,7 +198,7 @@ void loop() {
   if (millis() - printTime > 60000) {
       zbGateway.printGatewayDevices();
       zbGateway.printJoinedDevices();
-      if (zbGateway.getGatewayDevices().size() > 0) zbGateway.setIASZReporting(10, 15);
+      if (zbGateway.getGatewayDevices().size() > 0) zbGateway.setIASZReporting(0, 0);
       printTime = millis();
   }
 }
