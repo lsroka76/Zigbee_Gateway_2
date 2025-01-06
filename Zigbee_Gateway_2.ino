@@ -149,6 +149,7 @@ static void Z2S_simple_desc_req(esp_zb_zdp_status_t zdo_status, esp_zb_af_simple
 
 uint16_t short_addr_req;
 
+uint16_t gateway_devices_list_size = 0;
 
 void loop() {
   
@@ -245,13 +246,17 @@ void loop() {
       log_d("Unknown model %s, no binding is possible", zbd_model_name);
     }
   }
-  if (millis() - printTime > 10000) {
+  //if (millis() - printTime > 10000) {
+  if (zbGateway.getGatewayDevices().size() > gateway_devices_list_size) {
+
+      gateway_devices_list_size = zbGateway.getGatewayDevices().size();
+
       zbGateway.printGatewayDevices();
       zbGateway.printJoinedDevices();
       //if (zbGateway.getGatewayDevices().size() > 0) zbGateway.setIASZReporting(0, 0);
       //if (zbGateway.getGatewayDevices().size() > 0) {
-      for ([[maybe_unused]]
-       const auto &device : zbGateway.getGatewayDevices()) {
+      //for ([[maybe_unused]]
+       const auto device = zbGateway.getGatewayDevices().back(); {
   
         esp_zb_zdo_active_ep_req_param_t ep_cmd_req;
         
