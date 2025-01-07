@@ -108,9 +108,7 @@ public:
   virtual void addBoundDevice(zb_device_params_t *device) {
     _bound_devices.push_back(device);
     _is_bound = true;
-   //if (_on_bound_device != NULL) 
-	//_on_bound_device(device);
-  }
+   }
 
   void onIdentify(void (*callback)(uint16_t)) {
     _on_identify = callback;
